@@ -1,10 +1,3 @@
----
-学习目标:
-  - 掌握编程的基本思维
-  - 掌握编程的基本语法
-typora-copy-images-to: images
----
-
 # JavaScript基础
 
 ## JavaScript介绍
