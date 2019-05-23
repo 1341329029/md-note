@@ -417,15 +417,15 @@ git mv命令用于移动或重命名文件，目录或符号链接。
     $ git log <file> 查看某文件的日志
     $ git log . 查看本目录的日志
 
-![44](.\images\44.png)
+![44](./images/44.png)
 
 如果感觉log有点乱,可以git log --oneline,让日志单行显示.
 
-![45](./\images\45.png)
+![45](./images/45.png)
 
 也可以用git log --pretty=oneline
 
-![46](.\images\46.png)
+![46](./images/46.png)
 
 #### 3.5.2 比较版本不同
 
@@ -433,7 +433,7 @@ git mv命令用于移动或重命名文件，目录或符号链接。
 $ git diff <版本X> <版本Y>
 ```
 
-![47](C:\Users\JW-YZH\Desktop\md-note\git\images\47.png)
+![47](./images/47.png)
 
 ### 3.6  撤销操作
 
@@ -443,7 +443,7 @@ $ git diff <版本X> <版本Y>
 $ git checkout -- <file>
 ```
 
-![48](.\images\48.png)
+![48](./images/48.png)
 
 撤销更改，将本地文件还原为git 现存的版本
 
@@ -451,7 +451,7 @@ $ git checkout -- <file>
 
     $ git reset HEAD <file>
 
-![49](.\images\49.png)
+![49](./images/49.png)
 
 #### 3.6.3 git commit之后进行撤销
 
@@ -461,9 +461,9 @@ $ git revert HEAD^               撤销前前一次 commit
 $ git revert commit （比如：fa042ce57ebbe5bb9c8db709f719cec2c58ee7ff）撤销指定的版本，撤销也会作为一次提交进行保存。
 ```
 
-![50](.\images\50.png)
+![50](./images/50.png)
 
-![51](.\images\51.png)
+![51](./images/51.png)
 
 ### 3.7 获取远程主机某个分支的更新
 
@@ -475,7 +475,7 @@ $ git pull <远程主机名> <远程分支名>:<本地分支名>
 
 命令用于从另一个存储库或本地分支获取并集成(整合)。`git pull`命令的作用是：取回远程主机某个分支的更新，再与本地的指定分支合并，它的完整格式稍稍有点复杂。
 
-![52](C:\Users\JW-YZH\Desktop\md-note\git\images\52.png)
+![52](./images/52.png)
 
 #### 3.7.2 获取远程主机某个分支的更新(先不合并)
 
@@ -485,7 +485,7 @@ $ git log -p master..origin/master
 $ git merge origin
 ```
 
-![53](.\images\53.png)
+![53](./images/53.png)
 
 #### 3.7.3 git fetch和git pull的区别
 
@@ -525,7 +525,7 @@ Shell
 $ git reflog 查看版本变化
 ```
 
-![54](./images\54.png)
+![54](./images/54.png)
 
 HEAD指向当前版本5d5df86, 
 
@@ -539,7 +539,7 @@ HEAD指向当前版本5d5df86,
 $ git reset --hard 6207e59 
 ```
 
-![55](./images\55.png)
+![55](./images/55.png)
 
 注意:版本号不用写那么长,能要能保证不与其他版本号重复就行. 
 
@@ -568,7 +568,7 @@ $ git reset --hard 6207e59
 
 如果有了分支,刚才的难题就好解决了,如下图:
 
-![56](.\images\56.png)
+![56](./images/56.png)
 
 在做"微信支付"时,我们创建一个wechat分支.
 把wechat分支commit,此时,master分支内容不会变,因为分支不同。
