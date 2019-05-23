@@ -1,3 +1,5 @@
+
+
  # Git 基础教程
 
 ## 1.什么是git
@@ -209,7 +211,7 @@ rm : 删除
 <img src="images/16.png" width="600" align=center />
 
 ### 3.2 Github与git连接（2）
-    
+
 1.复制网址
 
 <img src="images/17.png" width="600" align=center />
@@ -405,19 +407,294 @@ git mv命令用于移动或重命名文件，目录或符号链接。
 
 <img src="images/43.png" width="600" align=center />
 
-### 3.5  查看提交历史
+### 3.5  改动日志
 
-    $ git log
+#### 3.5.1 查看日志
 
+在提交了若干更新之后，又或者克隆了某个项目，想回顾下提交历史，可以使用 `git log` 命令查看。
+
+    $ git log 查看项目的日志
+    $ git log <file> 查看某文件的日志
+    $ git log . 查看本目录的日志
+
+![44](.\images\44.png)
+
+如果感觉log有点乱,可以git log --oneline,让日志单行显示.
+
+![45](./\images\45.png)
+
+也可以用git log --pretty=oneline
+
+![46](.\images\46.png)
+
+#### 3.5.2 比较版本不同
+
+```git
+$ git diff <版本X> <版本Y>
+```
+
+![47](C:\Users\JW-YZH\Desktop\md-note\git\images\47.png)
 
 ### 3.6  撤销操作
 
-    $ git commit --amend
+#### 3.6.1 未添加到暂存区的撤销(没有git add)
 
-## 未完待续 ...
+```
+$ git checkout -- <file>
+```
+
+![48](.\images\48.png)
+
+撤销更改，将本地文件还原为git 现存的版本
+
+#### 3.6.2 已添加到暂存区的撤销(git add后)
+
+    $ git reset HEAD <file>
+
+![49](.\images\49.png)
+
+#### 3.6.3 git commit之后进行撤销
+
+```
+$ git revert HEAD                  撤销前一次 commit
+$ git revert HEAD^               撤销前前一次 commit
+$ git revert commit （比如：fa042ce57ebbe5bb9c8db709f719cec2c58ee7ff）撤销指定的版本，撤销也会作为一次提交进行保存。
+```
+
+![50](.\images\50.png)
+
+![51](.\images\51.png)
+
+### 3.7 获取远程主机某个分支的更新
+
+#### 3.7.1 获取远程主机某个分支的更新(合并)
+
+```
+$ git pull <远程主机名> <远程分支名>:<本地分支名>
+```
+
+命令用于从另一个存储库或本地分支获取并集成(整合)。`git pull`命令的作用是：取回远程主机某个分支的更新，再与本地的指定分支合并，它的完整格式稍稍有点复杂。
+
+![52](C:\Users\JW-YZH\Desktop\md-note\git\images\52.png)
+
+#### 3.7.2 获取远程主机某个分支的更新(先不合并)
+
+```
+$ git fetch origin
+$ git log -p master..origin/master
+$ git merge origin
+```
+
+![53](.\images\53.png)
+
+#### 3.7.3 git fetch和git pull的区别
+
+1. *git fetch*：相当于是从远程获取最新版本到本地，不会自动合并。
+
+```
+$ git fetch origin master
+$ git log -p master..origin/master
+$ git merge origin/master
+```
+
+以上命令的含义：
+
+- 首先从远程的`origin`的`master`主分支下载最新的版本到`origin/master`分支上
+
+- 然后比较本地的`master`分支和`origin/master`分支的差别
+
+- 最后进行合并
+
+  
+
+2. *git pull*：相当于是从远程获取最新版本并`merge`到本地 
+
+```shell
+git pull origin master
 
 
-name | 111 | 222 | 333 | 444
-:-: | :-: | :-: | :-: | :-:
-aaa | bbb | ccc | ddd | eee| 
-fff | ggg| hhh | iii | 000|
+Shell
+```
+
+上述命令其实相当于`git fetch` 和 `git merge`
+在实际使用中，`git fetch`更安全一些，因为在`merge`前，我们可以查看更新情况，然后再决定是否合并。
+
+### 3.8 版本切换
+
+```
+$ git reflog 查看版本变化
+```
+
+![54](./images\54.png)
+
+HEAD指向当前版本5d5df86, 
+
+切换为head的前1版本,git reset --hard HEAD^切换为head的前2版本,git reset --hard HEAD^^ 
+
+切换为head的前100版本,git reset --hard HEAD~100 
+
+也可以利用版本号来切换,例 
+
+```
+$ git reset --hard 6207e59 
+```
+
+![55](./images\55.png)
+
+注意:版本号不用写那么长,能要能保证不与其他版本号重复就行. 
+
+### 3.9 分支管理
+
+#### 3.9.1分分支支有有什什么么用用**?**
+
+在开发中,遇到这样的情况怎么办?
+网站已有支付宝在线支付功能,要添加"微信支付".
+修改了3个文件, wechat.php,pay.php
+
+刚做到一半,突然有个紧急bug: 支付宝支付后不能修改订单状你需要立即马上修改这个bug,需要修改的文件是,ali.php,pa问题是:pay.php,已经被你修改过,而且尚未完成.
+
+问题是:pay.php,已经被你修改过,而且尚未完成.直接在此基础上改,肯定有问题.
+把pay.php倒回去? 那我之前的工作白费了.
+
+此时你肯定会想: 在做"微信支付"时,能否把仓库复制一份,在此副本上修改,不影响原仓库的内容.修改完毕后,再把副本上的修改合并过去.
+
+好的,这时你已经有了分支的思想.
+
+前面见过的master,即是代码的主干分支,
+
+事实上,在实际的开发中,往往不会直接修改和提交到master分支上
+
+而是创建一个dev分支,在dev分支上,修改测试,没问题了,再把
+
+如果有了分支,刚才的难题就好解决了,如下图:
+
+![56](.\images\56.png)
+
+在做"微信支付"时,我们创建一个wechat分支.
+把wechat分支commit,此时,master分支内容不会变,因为分支不同。
+
+当遇到紧急bug时,创建一个AliBug分支
+
+修复bug后,把AliBug分支合并到master分支上.
+
+再次从容切换到wechat分支上,接着开发"微信支付"功能,开发完毕后
+
+把wechat分支合并到master分支上.
+
+#### 3.9.2查看分支
+
+***查看所有分支 git branch***
+
+例：
+
+```
+$ git branch
+master # 说明只有master分支,且处于master分支.
+```
+
+#### 3.9.3创建分支
+
+创建dev分支 git branch dev
+
+```
+git branch dev # 创建dev分支
+git branch #查看分支
+dev
+
+master # dev分支创建成功,但仍处于master分支
+```
+
+#### 3.9.4切换分支
+
+切换到dev分支 git checkout dev
+再次查看
+
+```
+$ git branch
+
+dev
+master # 已切换到dev分支上
+```
+
+#### 3.9.5 合并分支
+
+当我们在dev上开发某功能,并测试通过后,可以把dev的内容合
+
+例:
+当前的readme.txt 内容为"so so",在dev分支下,添加一行"from dev"
+
+并提交
+
+```
+git add readme.txt
+
+git commit -m "mod in dev"
+```
+
+再次切换到master,查看readme.txt的内容,仍为'so so'
+合并dev分支,git merge dev, 如下:
+
+```
+$ git merge dev
+Updating c5364fe..412926b
+Fast-forward
+readme.txt | 1 +
+1 file changed, 1 insertion(+)再次查看readme.txt的内容,已变为"soso from dev";
+```
+
+#### 3.9.6删除分支
+
+```
+$ git branch -d dev
+Deleted branch dev (was 412926b).
+```
+
+#### 3.9.7 快快速速创创建建和和切切换换分分支支
+
+git checkout -b dev # 创建dev分支并立即切换到dev分支
+即起到git branch dev和git checkout dev的共同作用.
+
+###  3.10远程仓库地址 
+
+远程仓库的地址一般为https形状,或者是 git开头. 所谓远程仓库地址,即是给这些比较长的远程URL地址起一个短的别名.
+
+#### 3.10.1查看远程仓库别名
+
+![57](.\images\57.png)
+
+#### 3.10.2 删除远程库别名
+
+```
+命令:git remote remove <远程库名> 
+
+示例:git remote remove origin 
+```
+
+####  3.10.3 添加远程库别名
+
+```
+命令:git remote add <远程库名> <远程库地址> 
+
+示例: 
+
+git remote add origin https://git.oschina.net/lianshou/test.git 
+
+注**:** 远程库名一般叫origin,但并非强制,你可以自己起名. 
+
+例: 
+
+git remote add online https://git.oschina.net/lianshou/test.git 
+```
+
+#### 3.10.4 修改远程库别名
+
+```
+git remote rename <旧名称> <新名称>
+例:
+git remote rename online oschina
+```
+
+
+
+
+
